@@ -40,12 +40,13 @@ ActiveRecord::Schema.define(version: 20150606204812) do
   add_index "hobbies", ["value"], name: "index_hobbies_on_value", unique: true, using: :btree
 
   create_table "locations", force: :cascade do |t|
-    t.string "name",      limit: 255, null: false
+    t.string "city",      limit: 255, null: false
+    t.string "country",   limit: 255, null: false
     t.float  "latitude",  limit: 24
     t.float  "longitude", limit: 24
   end
 
-  add_index "locations", ["name"], name: "index_locations_on_name", unique: true, using: :btree
+  add_index "locations", ["city", "country"], name: "index_locations_on_city_and_country", unique: true, using: :btree
 
   create_table "particularities", force: :cascade do |t|
     t.string "value", limit: 255, null: false
