@@ -2,7 +2,7 @@ require 'test_helper'
 
 class CustomerTest < ActiveSupport::TestCase
     test 'Fail Creation empty' do
-        assert_raise do
+        assert_raise ActiveRecord::StatementInvalid  do
             Customer.create({})
         end
     end

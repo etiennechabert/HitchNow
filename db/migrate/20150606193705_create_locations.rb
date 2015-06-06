@@ -4,6 +4,8 @@ class CreateLocations < ActiveRecord::Migration
             t.string    :name, null: false
             t.float     :latitude
             t.float     :longitude
+
+            t.index :name, unique: true
         end
     end
 end

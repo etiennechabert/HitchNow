@@ -1,7 +1,9 @@
 require 'test_helper'
 
 class ProfileTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+    test 'Empty fail' do
+        assert_raise ActiveRecord::StatementInvalid  do
+            Profile.create({})
+        end
+    end
 end
