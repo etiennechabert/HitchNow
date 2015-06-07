@@ -54,23 +54,15 @@ class GirlHtmlParser
 
     def analyse_last_connection(last_connection)
         last_connection_array = last_connection.split(' ')
-        case last_connection_array[1]
+        case last_connection_array[1].pluralize
             when 'minutes'
-                last_connection_array[0].to_i.minutes.ago
-            when 'minute'
                 last_connection_array[0].to_i.minutes.ago
             when 'heures'
                 last_connection_array[0].to_i.hours.ago
-            when 'heure'
-                last_connection_array[0].to_i.hours.ago
             when 'jours'
-                last_connection_array[0].to_i.days.ago
-            when 'jour'
                 last_connection_array[0].to_i.days.ago
             when 'mois'
                 last_connection_array[0].to_i.months.ago
-            else
-                raise "#{last_connection_array[1]} : UNKNOW CODE"
         end
     end
 
@@ -81,7 +73,6 @@ class GirlHtmlParser
 
     def analyse_profile_details
         element = @html.css('#view_details .data')
-        begin
             {
                 eyes: analyse_profile_details_element(element.css('td'), 0),
                 profession: analyse_profile_details_element(element.css('td'), 1),
@@ -96,10 +87,6 @@ class GirlHtmlParser
                 hobbies: analyse_profile_details_element(element.css('td'), 10),
                 particularities: analyse_profile_details_element(element.css('td'), 11)
             }
-        rescue => e
-            byebug
-        end
-
     end
 
     ## HACK TO REPLACE 160 CHARS BY 32 CHARS (2 DIFFERENTS KINDS OF SPACE)
