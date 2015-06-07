@@ -82,7 +82,6 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
 
     test 'base girl parsing' do
         girl_html_parser = GirlHtmlParser.new(get_file_content)
-        byebug
         assert_equal girl_html_parser.analyse, base_girl_expected
     end
 

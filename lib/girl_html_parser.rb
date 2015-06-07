@@ -39,7 +39,16 @@ class GirlHtmlParser
         }
     end
 
+    ## HACK TO REPLACE 160 CHARS BY 32 CHARS (2 DIFFERENTS KINDS OF SPACE)
+    def filter_space(string)
+        string.each_char.with_index do |element, index|
+            string[index] = ' ' if element.ord == 160
+        end
+        string
+    end
+
     def analyse_profile_scores
+        result = {}
         element = @html.css('#popularity')
         {
             popularity: element.css('.pop-rate').children[1].text.strip,
@@ -48,6 +57,9 @@ class GirlHtmlParser
             visits: element.css('table tr')[2].css('td')[0].children[0].text.strip.split(' ')[0].strip,
             buckets: element.css('table tr')[3].css('td')[0].children[0].text.strip.split(' ')[0].strip,
             total: element.css('.total td').children[0].text.strip,
-        }
+        }.each do |k, v|
+            result[k] = filter_space(v)
+        end
+        result
     end
 end
