@@ -55,7 +55,6 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
             buckets: 12,
             total: 51885
         }
-
     end
 
     def base_girl_profile_in_brief
