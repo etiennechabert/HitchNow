@@ -6,7 +6,7 @@ class GirlHtmlParser
     end
 
     def analyse
-        analyse_profile_in_brief.merge(analyse_profile_details)
+        analyse_profile_in_brief.merge(analyse_profile_details).merge(analyse_profile_scores)
     end
 
     # @return [Hash]
@@ -36,6 +36,18 @@ class GirlHtmlParser
             foodLikes: element.css('td')[9].children[1].children[2].text.strip,
             hobbies: element.css('td')[10].children[1].children[2].text.strip,
             particularities: element.css('td')[11].children[1].children[2].text.strip
+        }
+    end
+
+    def analyse_profile_scores
+        element = @html.css('#popularity')
+        {
+            popularity: element.css('.pop-rate').children[1].text.strip,
+            mails: element.css('table tr')[0].css('td')[0].children[0].text.strip.split(' ')[0].strip,
+            charms: element.css('table tr')[1].css('td')[0].children[0].text.strip.split(' ')[0].strip,
+            visits: element.css('table tr')[2].css('td')[0].children[0].text.strip.split(' ')[0].strip,
+            buckets: element.css('table tr')[3].css('td')[0].children[0].text.strip.split(' ')[0].strip,
+            total: element.css('.total td').children[0].text.strip,
         }
     end
 end

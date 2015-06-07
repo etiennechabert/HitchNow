@@ -14,7 +14,6 @@ class CreateProfiles < ActiveRecord::Migration
             t.integer   :charms, null: false
             t.integer   :visits, null: false
             t.integer   :bucket, null: false
-            t.integer   :bonus, null: false
             t.integer   :total, null: false
 
             t.date      :last_connection, null: false

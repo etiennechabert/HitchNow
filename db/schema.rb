@@ -73,7 +73,6 @@ ActiveRecord::Schema.define(version: 20150606204812) do
     t.integer "charms",          limit: 4,                null: false
     t.integer "visits",          limit: 4,                null: false
     t.integer "bucket",          limit: 4,                null: false
-    t.integer "bonus",           limit: 4,                null: false
     t.integer "total",           limit: 4,                null: false
     t.date    "last_connection",                          null: false
     t.boolean "online",          limit: 1,                null: false

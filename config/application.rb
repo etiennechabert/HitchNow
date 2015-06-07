@@ -25,5 +25,8 @@ module HitchNow
 
     #require lib
     config.autoload_paths << Rails.root.join('lib')
+
+    # Encoding
+    config.encoding = "utf-8"
   end
 end

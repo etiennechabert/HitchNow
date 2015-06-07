@@ -8,12 +8,6 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
         r
     end
 
-    def hash_included?(big, little)
-        return false unless little.keys.included_in? big.keys
-        return false unless little.values.included_in? big.values
-        true
-    end
-
     def base_girl_expected
         {
             online: true,
@@ -32,7 +26,13 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
             origins: 'européennes',
             foodLikes: 'japonais, italien, chinois',
             hobbies: 'découvrir, lire, sortir',
-            particularities: 'non renseigné'
+            particularities: 'non renseigné',
+            popularity: '89%',
+            mails: '53',
+            charms: '1 208',
+            visits: '4 855',
+            buckets: '12',
+            total: '51 885'
         }
     end
 
@@ -63,6 +63,17 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
         }
     end
 
+    def base_girl_scores
+        {
+            :popularity=>"89%",
+            :mails=>"53",
+            :charms=>"1 208",
+            :visits=>"4 855",
+            :buckets=>"12",
+            :total=>"51 885"
+        }
+    end
+
     test 'wrong argument' do
         assert_raise RuntimeError do
             GirlHtmlParser.new({})
@@ -71,6 +82,7 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
 
     test 'base girl parsing' do
         girl_html_parser = GirlHtmlParser.new(get_file_content)
+        byebug
         assert_equal girl_html_parser.analyse, base_girl_expected
     end
 
@@ -82,6 +94,11 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
     test 'base girl parsing data' do
         girl_html_parser = GirlHtmlParser.new(get_file_content)
         assert_equal girl_html_parser.analyse_profile_details, base_girl_profile_data
+    end
+
+    test 'base girl parsing score' do
+        girl_html_parser = GirlHtmlParser.new(get_file_content)
+        assert_equal girl_html_parser.analyse_profile_scores, base_girl_scores
     end
 
 end
