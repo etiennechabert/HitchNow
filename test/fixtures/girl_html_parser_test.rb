@@ -37,6 +37,27 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
         }
     end
 
+    def base_girl_expected_filtered
+        {
+            age: 22,
+            id: 110994558,
+            hairs: %w(châtains, mi-longs, raides),
+            weight: 55,
+            height: 160,
+            apparence: 'normale',
+            foodLikes: %w(japonais, italien, chinois),
+            hobbies: %w(découvrir, lire, sortir),
+            style: %w(classique, geekette),
+            particularities: %w(),
+            popularity: 89,
+            charms: 1208,
+            visits: 4855,
+            buckets: 12,
+            total: 51885
+        }
+
+    end
+
     def base_girl_profile_in_brief
         {
             :online=>true,
@@ -88,12 +109,17 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
 
     test 'base girl parsing' do
         girl_html_parser = GirlHtmlParser.new(get_file_content)
-        assert_equal girl_html_parser.analyse, base_girl_expected
+        base_girl = girl_html_parser.analyse
+        last_connection = base_girl.extract!(:last_connection)
+        assert_equal base_girl, base_girl_expected
+        assert_in_delta last_connection[:last_connection].to_i, 0.seconds.ago.to_i, 60
     end
 
     test 'base girl parsing profile in brief' do
         girl_html_parser = GirlHtmlParser.new(get_file_content)
-        assert_equal girl_html_parser.analyse_profile_in_brief, base_girl_profile_in_brief
+        base_girl = girl_html_parser.analyse_profile_in_brief
+        base_girl.extract!(:last_connection)
+        assert_equal base_girl, base_girl_profile_in_brief
     end
 
     test 'base girl parsing data' do
@@ -119,4 +145,38 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
         end
     end
 
+    test '52 minutes_ago' do
+        girl_html_parser = GirlHtmlParser.new(get_file_content('52_minutes_ago.html'))
+
+        assert_in_delta girl_html_parser.analyse[:last_connection].to_i, 52.minutes.ago.to_i, 60
+        assert_not girl_html_parser.analyse[:online]
+    end
+
+    test '17 hours ago' do
+        girl_html_parser = GirlHtmlParser.new(get_file_content('17_hours_ago.html'))
+
+        assert_in_delta girl_html_parser.analyse[:last_connection].to_i, 17.hours.ago.to_i, 60
+        assert_not girl_html_parser.analyse[:online]
+    end
+
+    test 'one day ago' do
+        girl_html_parser = GirlHtmlParser.new(get_file_content('one_day_ago.html'))
+
+        assert_in_delta girl_html_parser.analyse[:last_connection].to_i, 1.days.ago.to_i, 60
+        assert_not girl_html_parser.analyse[:online]
+    end
+
+    test '11 days ago' do
+        girl_html_parser = GirlHtmlParser.new(get_file_content('11_days_ago.html'))
+
+        assert_in_delta girl_html_parser.analyse[:last_connection].to_i, 11.days.ago.to_i, 60
+        assert_not girl_html_parser.analyse[:online]
+    end
+
+    test '4 months ago' do
+        girl_html_parser = GirlHtmlParser.new(get_file_content('4_months_ago.html'))
+
+        assert_in_delta girl_html_parser.analyse[:last_connection].to_i, 4.months.ago.to_i, 60
+        assert_not girl_html_parser.analyse[:online]
+    end
 end

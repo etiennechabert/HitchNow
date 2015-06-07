@@ -35,31 +35,71 @@ class GirlHtmlParser
     # @return [Hash]
     def analyse_profile_in_brief
         element = @html.css('#profile-in-brief')
-        {
-            online: element.css('.last-cnx').text.strip == 'En ligne',
+        result = {
+            last_connection: element.css('.last-cnx').text.strip,
             age: element.css('.age').text.strip,
             city: element.css('.city').text.strip,
             country: element.css('.country').text.strip,
             id: element.css('#member-id').text.strip
         }.merge(analyse_profile_picture)
+        if result[:last_connection] == 'En ligne'
+            result[:last_connection] = 0.seconds.ago
+            result[:online] = true
+        else
+            result[:last_connection] = analyse_last_connection element.css('.last-cnx .date').text.strip
+            result[:online] = false
+        end
+        result
+    end
+
+    def analyse_last_connection(last_connection)
+        last_connection_array = last_connection.split(' ')
+        case last_connection_array[1]
+            when 'minutes'
+                last_connection_array[0].to_i.minutes.ago
+            when 'minute'
+                last_connection_array[0].to_i.minutes.ago
+            when 'heures'
+                last_connection_array[0].to_i.hours.ago
+            when 'heure'
+                last_connection_array[0].to_i.hours.ago
+            when 'jours'
+                last_connection_array[0].to_i.days.ago
+            when 'jour'
+                last_connection_array[0].to_i.days.ago
+            when 'mois'
+                last_connection_array[0].to_i.months.ago
+            else
+                raise "#{last_connection_array[1]} : UNKNOW CODE"
+        end
+    end
+
+    def analyse_profile_details_element(elements, element_nb)
+        elements_css = elements.css('td')
+        elements_css[element_nb].children[1].children.last.text.strip
     end
 
     def analyse_profile_details
         element = @html.css('#view_details .data')
-        {
-            eyes: element.css('td')[0].children[1].children[2].text.strip,
-            profession: element.css('td')[1].children[1].children[2].text.strip,
-            hairs: element.css('td')[2].children[1].children[2].text.strip,
-            alcohol: element.css('td')[3].children[1].children[2].text.strip,
-            physics: element.css('td')[4].children[1].children[2].text.strip,
-            smoke: element.css('td')[5].children[1].children[2].text.strip,
-            style: element.css('td')[6].children[1].children[2].text.strip,
-            alimentation: element.css('td')[7].children[1].children[2].text.strip,
-            origins: element.css('td')[8].children[1].children[2].text.strip,
-            foodLikes: element.css('td')[9].children[1].children[2].text.strip,
-            hobbies: element.css('td')[10].children[1].children[2].text.strip,
-            particularities: element.css('td')[11].children[1].children[2].text.strip
-        }
+        begin
+            {
+                eyes: analyse_profile_details_element(element.css('td'), 0),
+                profession: analyse_profile_details_element(element.css('td'), 1),
+                hairs: analyse_profile_details_element(element.css('td'), 2),
+                alcohol: analyse_profile_details_element(element.css('td'), 3),
+                physics: analyse_profile_details_element(element.css('td'), 4),
+                smoke: analyse_profile_details_element(element.css('td'), 5),
+                style: analyse_profile_details_element(element.css('td'), 6),
+                alimentation: analyse_profile_details_element(element.css('td'), 7),
+                origins: analyse_profile_details_element(element.css('td'), 8),
+                foodLikes: analyse_profile_details_element(element.css('td'), 9),
+                hobbies: analyse_profile_details_element(element.css('td'), 10),
+                particularities: analyse_profile_details_element(element.css('td'), 11)
+            }
+        rescue => e
+            byebug
+        end
+
     end
 
     ## HACK TO REPLACE 160 CHARS BY 32 CHARS (2 DIFFERENTS KINDS OF SPACE)

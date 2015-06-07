@@ -17,7 +17,7 @@ class CreateProfiles < ActiveRecord::Migration
             t.integer   :bucket, null: false
             t.integer   :total, null: false
 
-            t.date      :last_connection, null: false
+            t.datetime  :last_connection, null: false
             t.boolean   :online, null: false
         end
     end
