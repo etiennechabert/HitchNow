@@ -12,6 +12,7 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
         {
             online: true,
             age: '22 ans',
+            picture: './girl0_files/069bf6ce3068e96906d.jpg',
             city: 'Courbevoie',
             country: 'France',
             id: 'ID.110884558',
@@ -42,7 +43,8 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
             :age=> '22 ans',
             :city=> 'Courbevoie',
             :country=> 'France',
-            :id=> 'ID.110884558'
+            :id=> 'ID.110884558',
+            :picture=> './girl0_files/069bf6ce3068e96906d.jpg'
         }
     end
 

@@ -2,6 +2,7 @@ class CreateProfiles < ActiveRecord::Migration
     def change
         create_table    :profiles, :id => false do |t|
             t.string    :id, null: false
+            t.string    :picture, null: false
             t.integer   :age, default: ''
             t.string    :eyes, default: ''
             t.string    :profession, default: ''

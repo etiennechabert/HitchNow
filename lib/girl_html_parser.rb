@@ -18,6 +18,12 @@ class GirlHtmlParser
         result
     end
 
+    def analyse_profile_picture
+        {
+            picture: @html.css('.image-wrapper img')[1].attr('src')
+        }
+    end
+
     # @return [Hash]
     def analyse_profile_in_brief
         element = @html.css('#profile-in-brief')
@@ -27,7 +33,7 @@ class GirlHtmlParser
             city: element.css('.city').text.strip,
             country: element.css('.country').text.strip,
             id: element.css('#member-id').text.strip
-        }
+        }.merge(analyse_profile_picture)
     end
 
     def analyse_profile_details
