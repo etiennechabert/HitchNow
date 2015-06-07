@@ -111,4 +111,12 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
         assert_equal girl_html_parser.profile_others_girls, base_girl_other_girls
     end
 
+    test 'didn\'t exist girl' do
+        girl_html_parser = GirlHtmlParser.new(get_file_content('girl_didn_t_exist.html'))
+
+        assert_raise GirlHtmlParser::GirlNotExisting do
+            girl_html_parser.analyse
+        end
+    end
+
 end

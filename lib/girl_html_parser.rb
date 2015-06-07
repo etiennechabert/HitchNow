@@ -1,4 +1,7 @@
 class GirlHtmlParser
+
+    class GirlNotExisting < StandardError; end
+
     # @param [Nokogiri::HTML::Document] content
     def initialize(html)
         raise('WTF OBJECT ? Give me nokorigi or FU you') if html.class != Nokogiri::HTML::Document
@@ -6,7 +9,12 @@ class GirlHtmlParser
     end
 
     def analyse
+        analyse_errors
         analyse_profile_in_brief.merge(analyse_profile_details).merge(analyse_profile_scores)
+    end
+
+    def analyse_errors
+        raise GirlNotExisting if @html.css('.error_page_message').count > 0
     end
 
     def profile_others_girls
