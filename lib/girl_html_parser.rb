@@ -9,6 +9,15 @@ class GirlHtmlParser
         analyse_profile_in_brief.merge(analyse_profile_details).merge(analyse_profile_scores)
     end
 
+    def profile_others_girls
+        result = []
+        @html.css('.person a').each do |element|
+            next if element.attr('href').blank?
+            result.push element.attr('href').split('/')[4].split('?')[0]
+        end
+        result
+    end
+
     # @return [Hash]
     def analyse_profile_in_brief
         element = @html.css('#profile-in-brief')
