@@ -10,6 +10,49 @@ class GirlHtmlParser
 
     def analyse
         analyse_errors
+        tmp = analyse_tmp
+        tmp[:age] = tmp[:age].split(' ')[0].to_i
+        tmp[:id] = tmp[:id].split('.')[1].to_i
+        tmp[:hairs] = analyse_data_to_array tmp[:hairs]
+        tmp.merge!(analyse_physics(tmp.extract!(:physics)))
+        tmp[:foodLikes] = analyse_data_to_array tmp[:foodLikes]
+        tmp[:hobbies] = analyse_data_to_array tmp[:hobbies]
+        tmp[:particularities] = analyse_data_to_array tmp[:particularities]
+        tmp[:style] = analyse_data_to_array tmp[:style]
+        tmp[:popularity] = tmp[:popularity].split('%')[0].to_i
+        tmp[:mails] = tmp[:mails].delete(' ').to_i
+        tmp[:charms] = tmp[:charms].delete(' ').to_i
+        tmp[:visits] = tmp[:visits].delete(' ').to_i
+        tmp[:buckets] = tmp[:buckets].delete(' ').to_i
+        tmp[:total] = tmp[:total].delete(' ').to_i
+        tmp
+    end
+
+    def analyse_data_to_array(element)
+        return [] if element == 'non renseigné'
+        element.split(',').map {|e| e.strip}
+    end
+
+    def analyse_physics(physics)
+        result = {
+            weight: 0,
+            height: 0,
+            apparence: ''
+        }
+        physics[:physics].split(',').map{|e| e.strip.split(' ')}.each do |k, v|
+            case v
+                when 'cm'
+                    result[:weight] = k.to_i
+                when 'kg'
+                    result[:height] = k.to_i
+                when nil
+                    result[:apparence] = k
+            end
+        end
+        result
+    end
+
+    def analyse_tmp
         analyse_profile_in_brief.merge(analyse_profile_details).merge(analyse_profile_scores)
     end
 

@@ -16,6 +16,5 @@ class CustomerTest < ActiveSupport::TestCase
     end
 
     test "Success creation" do
-
     end
 end

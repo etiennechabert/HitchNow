@@ -6,4 +6,12 @@ class ProfileTest < ActiveSupport::TestCase
             Profile.create({})
         end
     end
+
+    test 'Test creation from base girl page' do
+
+    end
+
+    test 'Test creation from' do
+
+    end
 end

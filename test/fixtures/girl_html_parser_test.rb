@@ -11,88 +11,31 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
     def base_girl_expected
         {
             online: true,
-            age: '22 ans',
+            age: 22,
             picture: './girl0_files/069bf6ce3068e96906d.jpg',
             city: 'Courbevoie',
             country: 'France',
-            id: 'ID.110884558',
+            id: 110884558,
             eyes: 'marrons',
             profession: 'étudiante en alternance',
-            hairs: 'châtains, mi-longs, raides',
+            hairs: %w(châtains mi-longs raides),
             alcohol: 'de temps en temps',
-            physics: '160 cm, 55 kg, normale',
-            smoke: 'tolère la fumée',
-            style: 'classique, geekette',
-            alimentation: 'mange de tout',
-            origins: 'européennes',
-            foodLikes: 'japonais, italien, chinois',
-            hobbies: 'découvrir, lire, sortir',
-            particularities: 'non renseigné',
-            popularity: '89%',
-            mails: '53',
-            charms: '1 208',
-            visits: '4 855',
-            buckets: '12',
-            total: '51 885'
-        }
-    end
-
-    def base_girl_expected_filtered
-        {
-            age: 22,
-            id: 110994558,
-            hairs: %w(châtains, mi-longs, raides),
             weight: 55,
             height: 160,
             apparence: 'normale',
-            foodLikes: %w(japonais, italien, chinois),
-            hobbies: %w(découvrir, lire, sortir),
-            style: %w(classique, geekette),
+            smoke: 'tolère la fumée',
+            style: %w(classique geekette),
+            alimentation: 'mange de tout',
+            origins: 'européennes',
+            foodLikes: %w(japonais italien chinois),
+            hobbies: %w(découvrir lire sortir),
             particularities: %w(),
             popularity: 89,
+            mails: 53,
             charms: 1208,
             visits: 4855,
             buckets: 12,
             total: 51885
-        }
-    end
-
-    def base_girl_profile_in_brief
-        {
-            :online=>true,
-            :age=> '22 ans',
-            :city=> 'Courbevoie',
-            :country=> 'France',
-            :id=> 'ID.110884558',
-            :picture=> './girl0_files/069bf6ce3068e96906d.jpg'
-        }
-    end
-
-    def base_girl_profile_data
-        {
-            :eyes=> 'marrons',
-            :profession=> 'étudiante en alternance',
-            :hairs=> 'châtains, mi-longs, raides',
-            :alcohol=> 'de temps en temps',
-            :physics=> '160 cm, 55 kg, normale',
-            :smoke=> 'tolère la fumée',
-            :style=> 'classique, geekette',
-            :alimentation=> 'mange de tout',
-            :origins=> 'européennes',
-            :foodLikes=> 'japonais, italien, chinois',
-            :hobbies=> 'découvrir, lire, sortir',
-            :particularities=> 'non renseigné'
-        }
-    end
-
-    def base_girl_scores
-        {
-            :popularity=>"89%",
-            :mails=>"53",
-            :charms=>"1 208",
-            :visits=>"4 855",
-            :buckets=>"12",
-            :total=>"51 885"
         }
     end
 
@@ -110,25 +53,9 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
         girl_html_parser = GirlHtmlParser.new(get_file_content)
         base_girl = girl_html_parser.analyse
         last_connection = base_girl.extract!(:last_connection)
+        byebug
         assert_equal base_girl, base_girl_expected
         assert_in_delta last_connection[:last_connection].to_i, 0.seconds.ago.to_i, 60
-    end
-
-    test 'base girl parsing profile in brief' do
-        girl_html_parser = GirlHtmlParser.new(get_file_content)
-        base_girl = girl_html_parser.analyse_profile_in_brief
-        base_girl.extract!(:last_connection)
-        assert_equal base_girl, base_girl_profile_in_brief
-    end
-
-    test 'base girl parsing data' do
-        girl_html_parser = GirlHtmlParser.new(get_file_content)
-        assert_equal girl_html_parser.analyse_profile_details, base_girl_profile_data
-    end
-
-    test 'base girl parsing score' do
-        girl_html_parser = GirlHtmlParser.new(get_file_content)
-        assert_equal girl_html_parser.analyse_profile_scores, base_girl_scores
     end
 
     test 'base girl other girls' do
@@ -136,7 +63,7 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
         assert_equal girl_html_parser.profile_others_girls, base_girl_other_girls
     end
 
-    test 'didn\'t exist girl' do
+    test 'not existing girl' do
         girl_html_parser = GirlHtmlParser.new(get_file_content('girl_didn_t_exist.html'))
 
         assert_raise GirlHtmlParser::GirlNotExisting do
