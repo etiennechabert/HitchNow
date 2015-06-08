@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150606204812) do
+ActiveRecord::Schema.define(version: 20150608071515) do
 
   create_table "customers", force: :cascade do |t|
     t.string   "username",   limit: 255, null: false
@@ -54,28 +54,29 @@ ActiveRecord::Schema.define(version: 20150606204812) do
 
   add_index "particularities", ["value"], name: "index_particularities_on_value", unique: true, using: :btree
 
-  create_table "pending_links", force: :cascade do |t|
-    t.string "uri", limit: 255, null: false
+  create_table "pending_profiles", id: false, force: :cascade do |t|
+    t.integer "id", limit: 4, null: false
   end
 
-  add_index "pending_links", ["uri"], name: "index_pending_links_on_uri", unique: true, using: :btree
+  add_index "pending_profiles", ["id"], name: "index_pending_profiles_on_id", unique: true, using: :btree
 
   create_table "profiles", id: false, force: :cascade do |t|
-    t.string  "id",              limit: 255,              null: false
-    t.integer "age",             limit: 4
-    t.string  "eyes",            limit: 255, default: ""
-    t.string  "profession",      limit: 255, default: ""
-    t.string  "origins",         limit: 255, default: ""
-    t.string  "alcohol",         limit: 255, default: ""
-    t.string  "smoke",           limit: 255, default: ""
-    t.string  "alimentation",    limit: 255, default: ""
-    t.integer "popularity",      limit: 4,                null: false
-    t.integer "charms",          limit: 4,                null: false
-    t.integer "visits",          limit: 4,                null: false
-    t.integer "bucket",          limit: 4,                null: false
-    t.integer "total",           limit: 4,                null: false
-    t.date    "last_connection",                          null: false
-    t.boolean "online",          limit: 1,                null: false
+    t.string   "id",              limit: 255,              null: false
+    t.string   "picture",         limit: 255,              null: false
+    t.integer  "age",             limit: 4
+    t.string   "eyes",            limit: 255, default: ""
+    t.string   "profession",      limit: 255, default: ""
+    t.string   "origins",         limit: 255, default: ""
+    t.string   "alcohol",         limit: 255, default: ""
+    t.string   "smoke",           limit: 255, default: ""
+    t.string   "alimentation",    limit: 255, default: ""
+    t.integer  "popularity",      limit: 4,                null: false
+    t.integer  "charms",          limit: 4,                null: false
+    t.integer  "visits",          limit: 4,                null: false
+    t.integer  "bucket",          limit: 4,                null: false
+    t.integer  "total",           limit: 4,                null: false
+    t.datetime "last_connection",                          null: false
+    t.boolean  "online",          limit: 1,                null: false
   end
 
   create_table "styles", force: :cascade do |t|
