@@ -11,14 +11,15 @@ class GirlHtmlParser
     def analyse
         analyse_errors
         tmp = analyse_tmp
+        tmp.merge!(analyse_physics(tmp.extract!(:physics)))
+        tmp.merge!(analyse_location(tmp.extract!(:city, :country)))
         tmp[:age] = tmp[:age].split(' ')[0].to_i
         tmp[:id] = tmp[:id].split('.')[1].to_i
         tmp[:hairs] = analyse_data_to_array tmp[:hairs]
-        tmp.merge!(analyse_physics(tmp.extract!(:physics)))
-        tmp[:foodLikes] = analyse_data_to_array tmp[:foodLikes]
+        tmp[:food_likes] = analyse_data_to_array tmp[:food_likes]
         tmp[:hobbies] = analyse_data_to_array tmp[:hobbies]
         tmp[:particularities] = analyse_data_to_array tmp[:particularities]
-        tmp[:style] = analyse_data_to_array tmp[:style]
+        tmp[:styles] = analyse_data_to_array tmp[:styles]
         tmp[:popularity] = tmp[:popularity].split('%')[0].to_i
         tmp[:mails] = tmp[:mails].delete(' ').to_i
         tmp[:charms] = tmp[:charms].delete(' ').to_i
@@ -28,6 +29,15 @@ class GirlHtmlParser
         tmp
     end
 
+    def analyse_location(data)
+        {
+            location: {
+                city: data[:city],
+                country: data[:country]
+            }
+        }
+    end
+
     def analyse_data_to_array(element)
         return [] if element == 'non renseigné'
         element.split(',').map {|e| e.strip}
@@ -35,9 +45,9 @@ class GirlHtmlParser
 
     def analyse_physics(physics)
         result = {
-            weight: 0,
-            height: 0,
-            apparence: ''
+            weight: nil,
+            height: nil,
+            apparence: nil
         }
         physics[:physics].split(',').map{|e| e.strip.split(' ')}.each do |k, v|
             case v
@@ -123,10 +133,10 @@ class GirlHtmlParser
                 alcohol: analyse_profile_details_element(element.css('td'), 3),
                 physics: analyse_profile_details_element(element.css('td'), 4),
                 smoke: analyse_profile_details_element(element.css('td'), 5),
-                style: analyse_profile_details_element(element.css('td'), 6),
+                styles: analyse_profile_details_element(element.css('td'), 6),
                 alimentation: analyse_profile_details_element(element.css('td'), 7),
                 origins: analyse_profile_details_element(element.css('td'), 8),
-                foodLikes: analyse_profile_details_element(element.css('td'), 9),
+                food_likes: analyse_profile_details_element(element.css('td'), 9),
                 hobbies: analyse_profile_details_element(element.css('td'), 10),
                 particularities: analyse_profile_details_element(element.css('td'), 11)
             }
