@@ -42,9 +42,9 @@ class GirlHtmlParser
         physics[:physics].split(',').map{|e| e.strip.split(' ')}.each do |k, v|
             case v
                 when 'cm'
-                    result[:weight] = k.to_i
-                when 'kg'
                     result[:height] = k.to_i
+                when 'kg'
+                    result[:weight] = k.to_i
                 when nil
                     result[:apparence] = k
             end

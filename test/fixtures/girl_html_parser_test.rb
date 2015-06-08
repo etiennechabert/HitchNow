@@ -53,7 +53,6 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
         girl_html_parser = GirlHtmlParser.new(get_file_content)
         base_girl = girl_html_parser.analyse
         last_connection = base_girl.extract!(:last_connection)
-        byebug
         assert_equal base_girl, base_girl_expected
         assert_in_delta last_connection[:last_connection].to_i, 0.seconds.ago.to_i, 60
     end
