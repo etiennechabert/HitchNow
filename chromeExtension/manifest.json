@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "HitchNowWorker",
+  "short_name": "HitchNowWorker",
+  "description": "This extention is linked with http://hitchnow.com. It's mendatory for the services to execute queries with your account",
+  "version": "0.0.1",
+  "minimum_chrome_version": "38",
+
+  "icons": {
+    "16": "assets/icon_16.png",
+    "128": "assets/icon_128.png"
+  },
+
+  "app": {
+    "background": {
+      "scripts": ["background.js"]
+    }
+  }
+}
