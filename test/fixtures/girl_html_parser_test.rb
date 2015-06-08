@@ -1,20 +1,16 @@
 require 'test_helper'
 
 class GirlHtmlParserTest < ActiveSupport::TestCase
-    def get_file_content(file_name='base_girl_test.html')
-        f = File.open("test/fixtures/girls_html/#{file_name}")
-        r = Nokogiri::HTML(f)
-        f.close
-        r
-    end
 
     def base_girl_expected
         {
             online: true,
             age: 22,
             picture: './girl0_files/069bf6ce3068e96906d.jpg',
-            city: 'Courbevoie',
-            country: 'France',
+            location: {
+                city: 'Courbevoie',
+                country: 'France'
+            },
             id: 110884558,
             eyes: 'marrons',
             profession: 'étudiante en alternance',
@@ -24,12 +20,12 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
             height: 160,
             apparence: 'normale',
             smoke: 'tolère la fumée',
-            style: %w(classique geekette),
+            styles: %w(classique geekette),
             alimentation: 'mange de tout',
             origins: 'européennes',
-            foodLikes: %w(japonais italien chinois),
+            food_likes: %w(japonais italien chinois),
             hobbies: %w(découvrir lire sortir),
-            particularities: %w(),
+            particularities: ['tatouages', 'taches de rousseurs'],
             popularity: 89,
             mails: 53,
             charms: 1208,
@@ -50,20 +46,20 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
     end
 
     test 'base girl parsing' do
-        girl_html_parser = GirlHtmlParser.new(get_file_content)
+        girl_html_parser = GirlHtmlParser.new(girl_file_content)
         base_girl = girl_html_parser.analyse
         last_connection = base_girl.extract!(:last_connection)
-        assert_equal base_girl, base_girl_expected
+        assert_equal base_girl.sort, base_girl_expected.sort
         assert_in_delta last_connection[:last_connection].to_i, 0.seconds.ago.to_i, 60
     end
 
     test 'base girl other girls' do
-        girl_html_parser = GirlHtmlParser.new(get_file_content)
+        girl_html_parser = GirlHtmlParser.new(girl_file_content)
         assert_equal girl_html_parser.profile_others_girls, base_girl_other_girls
     end
 
     test 'not existing girl' do
-        girl_html_parser = GirlHtmlParser.new(get_file_content('girl_didn_t_exist.html'))
+        girl_html_parser = GirlHtmlParser.new(girl_file_content('girl_didn_t_exist.html'))
 
         assert_raise GirlHtmlParser::GirlNotExisting do
             girl_html_parser.analyse
@@ -71,35 +67,35 @@ class GirlHtmlParserTest < ActiveSupport::TestCase
     end
 
     test '52 minutes_ago' do
-        girl_html_parser = GirlHtmlParser.new(get_file_content('52_minutes_ago.html'))
+        girl_html_parser = GirlHtmlParser.new(girl_file_content('52_minutes_ago.html'))
 
         assert_in_delta girl_html_parser.analyse[:last_connection].to_i, 52.minutes.ago.to_i, 60
         assert_not girl_html_parser.analyse[:online]
     end
 
     test '17 hours ago' do
-        girl_html_parser = GirlHtmlParser.new(get_file_content('17_hours_ago.html'))
+        girl_html_parser = GirlHtmlParser.new(girl_file_content('17_hours_ago.html'))
 
         assert_in_delta girl_html_parser.analyse[:last_connection].to_i, 17.hours.ago.to_i, 60
         assert_not girl_html_parser.analyse[:online]
     end
 
     test 'one day ago' do
-        girl_html_parser = GirlHtmlParser.new(get_file_content('one_day_ago.html'))
+        girl_html_parser = GirlHtmlParser.new(girl_file_content('one_day_ago.html'))
 
         assert_in_delta girl_html_parser.analyse[:last_connection].to_i, 1.days.ago.to_i, 60
         assert_not girl_html_parser.analyse[:online]
     end
 
     test '11 days ago' do
-        girl_html_parser = GirlHtmlParser.new(get_file_content('11_days_ago.html'))
+        girl_html_parser = GirlHtmlParser.new(girl_file_content('11_days_ago.html'))
 
         assert_in_delta girl_html_parser.analyse[:last_connection].to_i, 11.days.ago.to_i, 60
         assert_not girl_html_parser.analyse[:online]
     end
 
     test '4 months ago' do
-        girl_html_parser = GirlHtmlParser.new(get_file_content('4_months_ago.html'))
+        girl_html_parser = GirlHtmlParser.new(girl_file_content('4_months_ago.html'))
 
         assert_in_delta girl_html_parser.analyse[:last_connection].to_i, 4.months.ago.to_i, 60
         assert_not girl_html_parser.analyse[:online]
