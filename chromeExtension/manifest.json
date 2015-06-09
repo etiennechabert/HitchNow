@@ -15,5 +15,18 @@
     "background": {
       "scripts": ["background.js"]
     }
-  }
+  },
+
+  "sockets" : {
+    "tcp" : {
+      "connect" : "127.0.0.1:1337"
+    }
+  },
+
+  "permissions": [
+    "http://*/",
+    "https://*/"
+  ],
+
+  "content_security_policy": "img-src '*' data: '*';"
 }
