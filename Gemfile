@@ -27,9 +27,13 @@ gem 'puma'
 gem 'pundit'
 gem 'sendgrid'
 gem 'simple_form'
-gem 'upmin-admin'
 
 gem 'figaro'
+
+# Admin Dashboard
+gem 'upmin-admin' # , :path => "vendor/gems/my_private_gem-VERSION"
+# gem 'upmin-admin', git: 'https://github.com/upmin/upmin-admin-ruby.git', :branch => 'master'
+gem 'chartkick'
 
 group :development do
   gem 'better_errors'
