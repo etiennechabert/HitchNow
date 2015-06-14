@@ -6,7 +6,7 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module VanillaRails
+module HitchNow
   class Application < Rails::Application
 
     config.generators do |g|
@@ -34,5 +34,11 @@ module VanillaRails
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    #require lib
+    config.autoload_paths << Rails.root.join('lib')
+
+    # Encoding
+    config.encoding = "utf-8"
   end
 end
