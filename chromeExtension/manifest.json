@@ -13,13 +13,13 @@
 
   "app": {
     "background": {
-      "scripts": ["background.js"]
+      "scripts": ["javascript/background.js"]
     }
   },
 
   "sockets" : {
     "tcp" : {
-      "connect" : "127.0.0.1:1337"
+      "connect" : "127.0.0.1:4242"
     }
   },
 
