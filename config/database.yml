@@ -1,4 +1,4 @@
-# MySQL.  Versions 5.0+ are recommended.
+# MySQL.  Versions 4.1 and 5.0 are recommended.
 #
 # Install the MYSQL driver
 #   gem install mysql2
@@ -47,6 +47,7 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+
 production:
   <<: *default
   database: HitchNow_production
